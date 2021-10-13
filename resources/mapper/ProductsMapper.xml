@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kgc.mapper.ProductsMapper">
+    <select id="getMax" resultType="int">
+        select max(id) from products
+    </select>
+<select id="getAll" resultType="com.kgc.pojo.Products">
+    select p.*,q.score as scoreid from
+    qualities as q inner join products as p
+    on p.id=q.productId
+    <where>
+        <if test="productName!=null and productName!=''">
+            p.productName like concat('%',#{productName},'%')
+        </if>
+    </where>
+    ORDER BY p.productDate
+    limit #{pageIndex},#{pageSize}
+</select>
+    <select id="getCount" resultType="int">
+        select count(*) from products
+        <where>
+            <if test="productName!=null and productName!=''">
+                productName like concat('%',#{productName},'%')
+            </if>
+        </where>
+    </select>
+    <insert id="addProducts" parameterType="com.kgc.pojo.Products">
+      insert into products values(null ,#{productName},#{productDate},#{productSum},#{productDesc},#{productPrice})
+    </insert>
+    <select id="selectFor" resultType="com.kgc.pojo.Products" parameterType="int">
+      select * from products where id=#{id}
+    </select>
+    <update id="getToUpdate" parameterType="com.kgc.pojo.Products">
+        update products set productDate=#{productDate},productName=#{productName},productSum=#{productSum},productDesc=#{productDesc},productPrice=#{productPrice}
+        where id=#{id}
+    </update>
+</mapper>

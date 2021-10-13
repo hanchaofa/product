@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kgc.mapper.QualitiesMapper">
+    <update id="updateQualities" parameterType="com.kgc.pojo.Qualities">
+      update Qualities set score=#{score},qualityDesc=#{qualityDesc},productId=#{productId} where id=#{id}
+    </update>
+    <insert id="addQualities" parameterType="com.kgc.pojo.Qualities">
+      insert into Qualities values (null ,0,'' ,#{productId})
+    </insert>
+    <select id="getById" parameterType="int" resultType="com.kgc.pojo.Qualities">
+        select q.*,p.productName as bname from qualities as q inner join products as p on p.id=q.productId where productId=#{productId}
+    </select>
+</mapper>
